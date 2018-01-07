@@ -1,4 +1,4 @@
-class Position {
+public class Position {
   //Simple 2D object that doesn't really *do* anything on it's own.
   
   //dimensions: x coord, y coord, width, height
@@ -17,5 +17,5 @@ class Position {
   
   //rotation, in rads
   float rotation = 0;
-  
+  public Position()
 }

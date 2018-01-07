@@ -1,0 +1,1 @@
+class Image extends Position implements Drawable
