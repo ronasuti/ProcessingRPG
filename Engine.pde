@@ -1,10 +1,30 @@
-//Base game engine, handles all game logic and dispatches
-//draw calls to screen. Runs "actual" game loop.
-//Depending on whether the object is terrain (Image only),
-//Gameplay (Actor or Image),
-//Or GUI/HUD (Button or Image),
-//It renders in a different PGraphics object
-class Engine
-{
+/*********************************************************************
+Base engine class. Runs much of what actually makes the game work,
+including rendering code. Uses its own instance of PGraphics in its own thread to do so.
+Rendering frames are called one by one via a function call to make it
+a little more efficient and simple to work with.
+*********************************************************************/
+
+
+import java.util.concurrent.LinkedBlockingQueue;
+
+
+class Engine {
+  private PGraphics masterFrame;
+  ArrayList <Layer> = new Arraylist <Layer>;
+
+  public void requestNextFrame() {
+    return masterFrame.get();
+  }
+}
+
+/*********************************************************************
+Layer class, which includes independent drawing frames for graphics
+and the actual location for positions. Nothing that is a position but
+not a layer should EVER be stored outside a layer, and layers shouldn't
+EVER be inside another layer as it can make the code very slow.
+*********************************************************************/
+class Layer extends Position {
+  private PGraphics frame;
   
 }
