@@ -1,4 +1,4 @@
-public class Position {
+class Position {
   //Simple 2D object that doesn't really *do* anything on it's own.
   
   //dimensions: x coord, y coord, width, height
@@ -18,4 +18,17 @@ public class Position {
   //rotation, in rads
   float rotation = 0;
   public Position()
+}
+
+class Image extends Position implements Drawable {
+  
+}
+
+//Base "active" game object. If it takes input, then do it here.
+
+class Actor extends Position implements Drawable {
+  
+  //In the middle of a collision?
+  boolean bIsColliding = false;
+  
 }
