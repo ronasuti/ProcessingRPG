@@ -11,6 +11,8 @@ abstract class Position {
   ///////////////////////////////////////////////////////////////////
   
   //dimensions: x coord, y coord. Relative to parent.
+  //used to intelligently calculate global position
+  //for rendering and collisions.
   
   private float x = 0;
   private float y = 0;
@@ -38,9 +40,16 @@ abstract class Position {
   
   private boolean canTick;
   
+  //Global dimensions.
+  private float xGlobal = 0;
+  private float yGlobal = 0;
+  private float xScaleGlobal = 0;
+  private float yScaleGlobal = 0;
+  private float rotationGlobal = 0;
+  
   
   ///////////////////////////////////////////////////////////////////
-  //METHODS
+  //METHODS, LOGIC
   ///////////////////////////////////////////////////////////////////
   //initialization
   public Position(float x, 
@@ -61,59 +70,68 @@ abstract class Position {
   }
   
   //updates a set amount of times per second, set by engine
-  //this should NOT include sensitive game code, as the game may tick
-  //slower under heavy load.
-  public void tick() {
+  //this should NOT include temporally sensitive game code, as the game may tick
+  //slower under heavy load. Anything that needs to run here should keep in mind
+  //time elapsed since last tick, a.k.a. delta.
+  public void tick(float delta) {
     
+    
+    //
   }
-  
-  ///////////////////////////////////////////////////////////////////
-  //ACCESSORS
-  ///////////////////////////////////////////////////////////////////
   
   //these all run sorta like recursive calls, going up the parent tree
   //to handle the complexities of relative location. Feeling proud of
   //this simple but elegant implementation ^___^ 
   //Check that there's a parent. If so, call THEIR function.
   //repeat until origin is found. Computations then step back down.
-  public float getGlobalX() {
+  public float calculateGlobalX() {
+    float temp;
     if(parent != null) {
-      parent.getGlobalX();
+      temp = parent.calculateGlobalX();
+    } else {
+      temp = x;
+    }
+  }
+  
+  public float calculateGlobalY() {
+    float temp;
+    if(parent != null) {
+      temp = parent.calculateGlobalY();
+    } else {
+      temp = y;
+    }
+  }
+  
+  public float calculateGlobalXScale() {
+    float temp;
+    if(parent != null) {
+      temp = parent.calculateGlobalXScale();
+    } else {
+      temp = xScale;
+    }
+  }
+  
+  public float calculateGlobalYScale() {
+    float temp;
+    if(parent != null) {
+      temp = parent.calculateGlobalYScale();
+    } else {
+      temp = yScale;
+    }
+  }
+  public float calculateGlobalRotation() {
+    float temp;
+    if(parent != null) {
+      temp =parent.calculateGlobalRotation();
     } else {
     
-    } 
-  }
-  
-  public float getGlobalY() {
-    if(parent != null) {
-      parent.getGlobalY();
-    }  else {
-    
     }
   }
   
-  public float getGlobalXScale() {
-    if(parent != null) {
-      parent.getGlobalXScale();
-    }  else {
-    
-    }
-  }
+  ///////////////////////////////////////////////////////////////////
+  //ACCESSORS
+  ///////////////////////////////////////////////////////////////////
   
-  public float getGlobalYScale() {
-    if(parent != null) {
-      parent.getGlobalYScale();
-    }  else {
-    
-    }
-  }
-  public float getGlobalRotation() {
-    if(parent != null) {
-      parent.getGlobalRotation();
-    }  else {
-    
-    }
-  }
 }
 
 /*********************************************************************
@@ -144,7 +162,7 @@ abstract class Actor extends Position implements Drawable {
   Controller controller;
   
   ///////////////////////////////////////////////////////////////////
-  //METHODS
+  //METHODS, LOGIC
   ///////////////////////////////////////////////////////////////////
   
   public Actor(float x, 
